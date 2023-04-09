@@ -22,11 +22,19 @@ const morganDebugStream = new stream.Writable({
 router.use(morgan('tiny', { stream: morganDebugStream }))
 
 router.param('id', (req, res, next, id) => {
-  req.params = {
-    id
-  }
+    req.params = {
+        id
+    }
 
-  next()
+    // 设置允许跨域的域名*代表允许任意域名跨域
+    // res.setHeader("Access-Control-Allow-Origin","http://127.0.0.1:3100");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    //允许的header类型
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    //跨域允许的请求方式
+    res.setHeader("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
+
+    next()
 })
 
 // parse all bodies up to 10mb regardless of mime type as a buffer
@@ -54,7 +62,7 @@ router.get('/data/:id', (req, res) => {
   const deviceId = req.params.id
 
   if (!router.__dataStore[deviceId] || router.__dataStore[deviceId].length === 0) {
-    res.statusCode = 404
+    res.statusCode = 200
     res.end()
   } else {
     const data = router.__dataStore[deviceId].shift()

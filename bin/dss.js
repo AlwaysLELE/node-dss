@@ -7,6 +7,6 @@ const server = http.createServer(function (req, res) {
   router(req, res, finalhandler(req, res))
 })
 
-const bind = server.listen(process.env.PORT || 3000, () => {
+const bind = server.listen(process.env.PORT || 3001, () => {
   debug(`online @ ${bind.address().port}`)
 })
